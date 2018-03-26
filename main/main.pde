@@ -7,6 +7,7 @@ String imgBasePath = "../img/";
 String placeholderPath = imgBasePath + "placeholder.png";
 int currentScene = 0;
 Star[] stars = new Star[20];
+Star currentStar;
 // initialise collection scene
 PImage cBackground;
 SoundFile hover;
@@ -51,17 +52,19 @@ class Star{
 		translate(w/2, h/2);
 		
 		if(isMouseOver()){
-			if(w < origW * MAX_SCALE){
+			if(w < origW * MAX_SCALE && currentScene == 0){
 				w *= scalef;
 				h *= scalef;
 			}
+
 			if(isLocked){
 				image(placeholderImg, x, y, w, h);
 				System.out.printf("%d %d %d %d\n", x, y, w, h);
 			} else {
 				image(starImg, x, y, w, h);
 			}
-			if(!isFXPlayed){
+
+			if(!isFXPlayed && currentScene == 0){
 				hover.play();
 				isFXPlayed = true;
 			}
@@ -156,7 +159,11 @@ void drawSceneCollection() {
 }
 
 void drawSceneStarInfo(){
-
+	fill(128, 200);
+	rect(0, 0, width, height);
+	// draw message box
+	fill(255);
+	rect(420, 100, 480, 550, 15);
 }
 
 void drawSceneFactory(){
@@ -165,7 +172,13 @@ void drawSceneFactory(){
 
 
 void draw() {
-	drawSceneCollection();
+	if(currentScene == 0){
+		drawSceneCollection();
+	} else if (currentScene == 1){
+		drawSceneCollection();
+		drawSceneStarInfo();
+	}
+	
 	// show fps
 	fill(255);
 	text(String.format("%.02f", frameRate) + " fps", 0, 0, 50, 50);
@@ -173,6 +186,22 @@ void draw() {
 
 void mouseClicked() {
 	if(currentScene == 0){
-		
+		boolean found = false;
+		for(int i = 0; i < stars.length; i++){
+			if(stars[i] != null && stars[i].isMouseOver()){
+				found = true;
+				currentStar = stars[i];
+				break;
+			}
+		}
+		// star clicked, show info box
+		if(found){
+			currentScene = 1;
+		}
+	}
+	else if(currentScene == 1){
+		if(mouseX<=420 || mouseY <= 100 || mouseX>=900 || mouseY>=650){
+			currentScene = 0;
+		}
 	}
 }
