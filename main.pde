@@ -1,11 +1,12 @@
-PImage img;
-int pointillize = 16;
+int currentScene;
+PShape backgroud;
+
 
 void setup() {
  	// using iPhone 6/7's aspect ratio
 	size(1334,750);
 	// TODO load backgroud image
-	img = loadImage("img/test.png");
+	// img = loadImage("img/test.png");
 	background(0);
 	smooth();
 }
@@ -19,7 +20,7 @@ void drawSceneStarInfo(){
 }
 
 void drawSceneFactory(){
-	
+
 }
 
 
