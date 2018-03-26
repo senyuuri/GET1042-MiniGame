@@ -28,6 +28,8 @@ class Star{
 	// origW, origH: the original width/height
 	// delta: amount of w/h change in 1 frame
 	int x, y, w, h, origW, origH;
+	int mass[], magnitude[], volume[], temperature[];
+	String ccolor;
 	float scalef = 1.03;
   	boolean isLocked;
 	boolean isFXPlayed;
@@ -41,11 +43,40 @@ class Star{
 		this.origW = w;
 		this.origH = h;
 		// TODO change to true
-		this.isLocked = true;
+		this.isLocked = false;
 		this.starImg = starImage;
 		this.isFXPlayed = false;
 		this.placeholderImg =  placeholderImg;
+		this.mass = new int[2];
+		this.magnitude = new int[2];
+		this.volume = new int[2];
+		this.temperature = new int[2];
+		this.ccolor = "";
 		printInfo();
+	}
+
+	void setMass(JSONArray raw){
+		this.mass[0] = raw.getInt(0);
+		this.mass[1] = raw.getInt(1);
+	}
+
+	void setMagnitude(JSONArray raw){
+		this.magnitude[0] = raw.getInt(0);
+		this.magnitude[1] = raw.getInt(1);
+	}
+
+	void setVolume(JSONArray raw){
+		this.volume[0] = raw.getInt(0);
+		this.volume[1] = raw.getInt(1);
+	}
+
+	void setTemperature(JSONArray raw){
+		this.temperature[0] = raw.getInt(0);
+		this.temperature[1] = raw.getInt(1);
+	}
+
+	void setColor(String ccolor){
+		this.ccolor = ccolor;
 	}
 
 	void draw(){
@@ -76,13 +107,15 @@ class Star{
 			w = origW;
 			h = origH;
 			isFXPlayed = false;
-			tint(90);
+			
 			if(isLocked){
+				tint(90);
 				image(placeholderImg, x, y, w, h);
+				noTint();
 			} else {
 				image(starImg, x, y, w, h);
 			}
-			noTint();
+			
 		}
 
 		// show name
@@ -129,7 +162,7 @@ void setup() {
 	loadStars();
 	frameRate(30);
 	// load collection scene resources
-	cBackground = loadImage(imgBasePath + "sky canvas wo arrows.png");
+	cBackground = loadImage(imgBasePath + "sky_canvas.png");
 	hover = new SoundFile(this, "hover.mp3");
 
 }
@@ -150,7 +183,13 @@ void loadStars(){
 		int width = star.getInt("width");
 		int height = star.getInt("height");
 		PImage starImg = loadImage(imgBasePath + star.getString("imgPath"));
+		// create new star
 		stars[i] = new Star(name, x, y, width, height, starImg, placeholderImg);
+		stars[i].setMass(star.getJSONArray("mass"));
+		stars[i].setMagnitude(star.getJSONArray("magnitude"));
+		stars[i].setVolume(star.getJSONArray("volume"));
+		stars[i].setTemperature(star.getJSONArray("temperature"));
+		stars[i].setColor(star.getString("color"));
 	}
 }
 
