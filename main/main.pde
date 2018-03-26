@@ -2,7 +2,7 @@
 int displayWidth = 1334;
 int displayHeight = 750;
 String imgBasePath = "../img/";
-String placeholderPath = imgBasePath + "blackhole.png";
+String placeholderPath = imgBasePath + "placeholder.png";
 int currentScene;
 // initialise collection scene
 PImage cBackground;
@@ -25,7 +25,8 @@ class Star{
 		this.y = y;
 		this.w = w;
 		this.h = h;
-		this.isLocked = true;
+		// TODO change to true
+		this.isLocked = false;
 		this.isMouseOver = false;
 		this.starImg = starImage;
 		this.placeholderImg =  placeholderImg;
@@ -78,22 +79,21 @@ void setup() {
 
 void loadStars(){
 	// load placeholder image
-	//PImage placeholderImg = loadImage(placeholderPath);
+	PImage placeholderImg = loadImage(placeholderPath);
 
 	// load star information from file
 	println("* Loading star objects......");
-	String[] lines = loadStrings("data/starlist.txt");
-	for (int i = 0 ; i < lines.length; i++) {
-		if(!lines[i].contains("#")){
-			String[] params = lines[i].split(",");
-			println(params);
-			PImage starImg = loadImage(imgBasePath + params[5]);
-			int x = Integer.parseInt(params[1]);
-			int y = Integer.parseInt(params[2]);
-			int w = Integer.parseInt(params[3]);
-			int h = Integer.parseInt(params[4]);
-			stars[i] = new Star(params[0], x, y, w, h, starImg, starImg);
-		}
+	JSONObject values = loadJSONObject("data/config.json");
+	JSONArray starlist = values.getJSONArray("starlist");
+	for (int i = 0; i < starlist.size(); i++) {
+		JSONObject star = starlist.getJSONObject(i); 
+		String name = star.getString("name");
+		int x = star.getInt("x");
+		int y = star.getInt("y");
+		int width = star.getInt("width");
+		int height = star.getInt("height");
+		PImage starImg = loadImage(imgBasePath + star.getString("imgPath"));
+		stars[i] = new Star(name, x, y, width, height, starImg, placeholderImg);
 	}
 }
 
@@ -105,7 +105,11 @@ void loadStars(){
 void drawSceneCollection() {
 	image(cBackground, 0, 0, displayWidth, displayHeight);
 	// draw stars
-	
+	for(int i = 0; i < stars.length; i++){
+		if(stars[i] != null){
+			stars[i].draw();
+		}
+	}
 	//
 }
 

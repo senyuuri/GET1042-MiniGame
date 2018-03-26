@@ -1,3 +1,0 @@
-#name,x,y,width,height,imgfile
-star1,0,0,20,20,black hole.png 
-star2,100,100,20,20,red giant.png

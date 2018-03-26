@@ -1,0 +1,21 @@
+{
+    "starlist":[
+        {
+            "name": "star1",
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 100,
+            "imgPath": "blackhole.png"
+        },
+        {
+            "name": "star2",
+            "x": 100,
+            "y": 100,
+            "width": 100,
+            "height": 100,
+            "imgPath": "massivestar.png"
+        }
+    ],
+    "arrowlist":[]
+}
