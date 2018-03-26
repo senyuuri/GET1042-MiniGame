@@ -4,9 +4,10 @@ int displayHeight = 750;
 String imgBasePath = "../img/";
 String placeholderPath = imgBasePath + "placeholder.png";
 int currentScene;
+Star[] stars = new Star[20];
 // initialise collection scene
 PImage cBackground;
-Star[] stars = new Star[10];
+
 
 
 /* ======================================================
@@ -26,7 +27,7 @@ class Star{
 		this.w = w;
 		this.h = h;
 		// TODO change to true
-		this.isLocked = false;
+		this.isLocked = true;
 		this.isMouseOver = false;
 		this.starImg = starImage;
 		this.placeholderImg =  placeholderImg;
@@ -35,11 +36,16 @@ class Star{
 
 	void draw(){
 		if(isLocked){
-			//TODO draw placeholder img
-			ellipse(x, y, w, h);
+			tint(90);
+			image(placeholderImg, x, y, w, h);
+			noTint();
 		} else {
 			image(starImg, x, y, w, h);
 		}
+		
+		// show name
+		fill(255);
+		text(this.name, x+35, y+h+10, 100, 100);
 	}
 
 	void unlock(){
@@ -74,7 +80,6 @@ void setup() {
 	loadStars();
 	// load collection scene resources
 	cBackground = loadImage(imgBasePath + "sky canvas wo arrows.png");
-
 }
 
 void loadStars(){
