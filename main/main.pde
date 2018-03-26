@@ -162,7 +162,7 @@ void setup() {
 	loadStars();
 	frameRate(30);
 	// load collection scene resources
-	cBackground = loadImage(imgBasePath + "sky_canvas.png");
+	cBackground = loadImage(imgBasePath + "sky_canvas_preview.png");
 	hover = new SoundFile(this, "hover.mp3");
 
 }
