@@ -21,6 +21,8 @@ JSONObject values;
 PImage cBackground;
 SoundFile hover;
 SoundFile bgm;
+PFont nameFont;
+PFont defaultFont;
 // initialise info scene
 
 // initialise factory scene
@@ -109,6 +111,22 @@ class Star{
 		this.ccolor = ccolor;
 	}
 
+	int getAvgMass(){
+		return this.mass[0] / this.mass[1];
+	}
+	
+	int getAvgMagnitude(){
+		return this.magnitude[0] / this.magnitude[1];
+	}
+
+	int getAvgVolume(){
+		return this.volume[0] / this.volume[1];
+	}
+
+	int getAvgTemperature(){
+		return this.temperature[0] / this.temperature[1];	
+	}
+
 	void draw(){
 		// (x,y) are the left upper corner coordinates(CORNER mode)
 		// Draw in CENTRE mode to allow scale animation
@@ -149,13 +167,18 @@ class Star{
 			}
 			
 		}
-
+		imageMode(CORNER);
 		// show name
-		textSize(13);
-		fill(255);
-		text(this.name, x, y+h/2+10, 100, 100);
-		// imageMode(CORNER);
+		if(this.state != State.LOCKED){
+			textFont(nameFont);
+			textSize(18);
+			fill(255);
+			text(this.name, x-w/2, y+h/2+10, 200, 200);
+			
+			textFont(defaultFont);
+		}
 		popMatrix();
+		// reset to default 
 	}
 
 	void drawAt(int xx, int yy, int ww, int hh){
@@ -322,11 +345,17 @@ void setup() {
 	smooth(4);
 	loadStars();
 	frameRate(60);
+	//String[] fontList = PFont.list();
 	// load collection scene resources
 	cBackground = loadImage(imgBasePath + "sky_canvas.png");
 	hover = new SoundFile(this, "hover.mp3");
 	bgm = new SoundFile(this, "menu.mp3");
+	nameFont = createFont("caput.ttf", 32);
+	defaultFont = createFont("Arial", 32);
+	// a quick fix to loop stereo mp3
 	bgm.play();
+	bgm.stop();
+	bgm.loop();
 	// create background stars
 	for(int i=0; i < bgstars.length; i++){
 		bgstars[i] = new BgStar();
@@ -396,7 +425,6 @@ void drawSceneCollection() {
 	for(int i=0; i < bgstars.length; i++){
 		if(bgstars[i] != null){
 			bgstars[i].draw();
-      		
 		}
 	}
 	// draw stars
@@ -419,11 +447,13 @@ void drawSceneStarInfo(){
 		return;
 	}
 	// draw star
-	currentStar.drawAt(450, 130, 150, 150);
+	currentStar.drawAt(370, 45, 150, 150);
 	fill(255);
 	textSize(30);
-	text(currentStar.name, 550, 145, 350, 100); 
-	
+	textFont(nameFont);
+	text(currentStar.name, 550, 120, 350, 100); 
+	textFont(defaultFont);
+
 	// draw progress bar
 	drawProgressBar("Mass", 450, 210, 0, 1000, 800, color(251, 190, 71));
 	drawProgressBar("Magnitude", 450, 250, 0, 1000, 400, color(242, 120, 79));
@@ -434,7 +464,7 @@ void drawSceneStarInfo(){
 	if(currentStar.state == State.LOCKED){
 		fill(209, 211, 212);
 	} else {
-		if (mouseX >= 450 && mouseX <= 860 && mouseY >= 415 && mouseY <= 465) {
+		if (isOverStartButton()) {
 			fill(209, 211, 212);
 		} else {
 			fill(255, 255, 255);
@@ -453,9 +483,16 @@ void drawSceneStarInfo(){
 	}
 }
 
+boolean isOverStartButton(){
+	if (mouseX >= 450 && mouseX <= 860 && mouseY >= 415 && mouseY <= 465) {
+		return true;
+	}
+	return false;
+}
+
 void drawProgressBar(String name, int x, int y, int min, int max, int value, color c){
 	fill(255);
-	textSize(13);
+	textSize(15);
 	text(name, x, y, 100, 50);
 	noStroke();
 	fill(255);
@@ -656,7 +693,13 @@ void mouseClicked() {
 	}
 	else if(currentScene == 1){
 		if(mouseX<=420 || mouseY <= 100 || mouseX>=900 || mouseY>=650){
+			// click outside the message box, return to collection scene
 			currentScene = 0;
+		}
+		else if (isOverStartButton() && currentStar.state == State.UNLOCKED){
+			// click on start button, forward to factory scene
+			
+			currentScene = 4;
 		}
 	}
 }
