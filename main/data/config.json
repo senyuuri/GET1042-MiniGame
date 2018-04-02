@@ -12,7 +12,7 @@
             "volume": [0, 0],
             "temperature": [0, 0],
             "color": "N/A",
-            "isLocked": false
+            "state": "starter"
         },
         {
             "name": "Open Cluster",
@@ -26,7 +26,7 @@
             "volume": [0, 0],
             "temperature": [0, 0],
             "color": "N/A",
-            "isLocked": false
+            "state": "starter"
         },
         {
             "name": "Massive Star",
@@ -40,7 +40,7 @@
             "volume": [1, 9],
             "temperature": [3, 4],
             "color": "yellow",
-            "isLocked": true
+            "state": "unlocked"
         },
         {
             "name": "Low-mass Star",
@@ -54,7 +54,7 @@
             "volume": [1, 9],
             "temperature": [2, 3],
             "color": "yellow",
-            "isLocked": true
+            "state": "unlocked"
         },
         {
             "name": "Brown Dward",
@@ -68,7 +68,7 @@
             "volume": [1, 9],
             "temperature": [3, 4],
             "color": "red",
-            "isLocked": true
+            "state": "unlocked"
         },
         {
             "name": "Red Supergiant",
@@ -82,7 +82,7 @@
             "volume": [1, 9],
             "temperature": [3, 4],
             "color": "yellow",
-            "isLocked": true
+            "state": "locked"
         },
         {
             "name": "Red Giant",
@@ -96,7 +96,7 @@
             "volume": [1, 9],
             "temperature": [3, 4],
             "color": "red",
-            "isLocked": true
+            "state": "locked"
         },
         {
             "name": "Type II Supernova",
@@ -110,7 +110,7 @@
             "volume": [1, 9],
             "temperature": [7, 8],
             "color": "many",
-            "isLocked": true
+            "state": "locked"
         },
         {
             "name": "Binary White Dwarf",
@@ -124,7 +124,7 @@
             "volume": [1, 9],
             "temperature": [5, 6],
             "color": "white",
-            "isLocked": true
+            "state": "locked"
         },
         {
             "name": "Planetary Nebula",
@@ -138,7 +138,7 @@
             "volume": [1, 9],
             "temperature": [4, 5],
             "color": "many",
-            "isLocked": true
+            "state": "locked"
         },
         {
             "name": "Supernova Remnant",
@@ -152,7 +152,7 @@
             "volume": [1, 9],
             "temperature": [7, 8],
             "color": "many",
-            "isLocked": true
+            "state": "locked"
         },
         {
             "name": "Type la Supernova",
@@ -166,7 +166,7 @@
             "volume": [1, 9],
             "temperature": [7, 8],
             "color": "many",
-            "isLocked": true
+            "state": "locked"
         },
         {
             "name": "Nova",
@@ -180,7 +180,7 @@
             "volume": [1, 9],
             "temperature": [7, 8],
             "color": "many",
-            "isLocked": true
+            "state": "locked"
         },
         {
             "name": "Black Hole",
@@ -194,7 +194,7 @@
             "volume": [1, 9],
             "temperature": [6, 7],
             "color": "black",
-            "isLocked": true
+            "state": "locked"
         },
         {
             "name": "Neutron Star",
@@ -208,7 +208,7 @@
             "volume": [1, 9],
             "temperature": [5, 6],
             "color": "white",
-            "isLocked": true
+            "state": "locked"
         },
         {
             "name": "Pulsar",
@@ -222,7 +222,7 @@
             "volume": [1, 9],
             "temperature": [5, 6],
             "color": "white",
-            "isLocked": true
+            "state": "locked"
         },
         {
             "name": "White Dwarf",
@@ -236,7 +236,7 @@
             "volume": [1, 9],
             "temperature": [3, 4],
             "color": "blue",
-            "isLocked": true
+            "state": "locked"
         },
         {
             "name": "Black Dwarf",
@@ -250,7 +250,7 @@
             "volume": [1, 9],
             "temperature": [0, 1],
             "color": "black",
-            "isLocked": true
+            "state": "locked"
         }
     ],
     "arrowlist":[]

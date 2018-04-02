@@ -38,6 +38,14 @@ PImage[] scale = new PImage[5];
 PImage factoryimg;
 PImage pointerimg;
 
+// Since enum doesn't work out-of-box in processing, 
+// use static abstract class as a hack
+static abstract class State {
+  static final int STARTER = 0;
+  static final int LOCKED = 1;
+  static final int UNLOCKED = 2;
+  static final int CLEAR = 3;
+}
 
 /* ======================================================
  * Object classes
@@ -53,11 +61,11 @@ class Star{
 	int mass[], magnitude[], volume[], temperature[];
 	String ccolor;
 	float scalef = 1.03;
-  	boolean isLocked;
 	boolean isFXPlayed;
 	PImage starImg, placeholderImg;
+	int state;
 
-	Star(String name, int x, int y, int w, int h, PImage starImage, PImage placeholderImg, boolean isLocked){
+	Star(String name, int x, int y, int w, int h, PImage starImage, PImage placeholderImg, int state){
 		this.name = name;
 		this.x = x; 
 		this.y = y;
@@ -65,7 +73,7 @@ class Star{
 		this.h = h;
 		this.origW = w;
 		this.origH = h;
-		this.isLocked = isLocked;
+		this.state = state;
 		this.starImg = starImage;
 		this.isFXPlayed = false;
 		this.placeholderImg =  placeholderImg;
@@ -114,7 +122,7 @@ class Star{
 				h *= scalef;
 			}
 
-			if(isLocked){
+			if(this.state == State.UNLOCKED || this.state == State.LOCKED){
 				image(placeholderImg, x, y, w, h);
 			} else {
 				image(starImg, x, y, w, h);
@@ -129,11 +137,14 @@ class Star{
 			h = origH;
 			isFXPlayed = false;
 			
-			if(isLocked){
+			if(this.state == State.LOCKED){
 				tint(90);
 				image(placeholderImg, x, y, w, h);
 				noTint();
-			} else {
+			} else if(this.state == State.UNLOCKED){
+				image(placeholderImg, x, y, w, h);
+			}
+			else {
 				image(starImg, x, y, w, h);
 			}
 			
@@ -148,7 +159,7 @@ class Star{
 	}
 
 	void drawAt(int xx, int yy, int ww, int hh){
-		if(isLocked){
+		if(this.state == State.UNLOCKED || this.state == State.LOCKED){
 			image(this.placeholderImg, xx, yy, ww, hh);
 		} else{
 			image(this.starImg, xx, yy, ww, hh);
@@ -156,7 +167,11 @@ class Star{
   	}
 
 	void unlock(){
-		isLocked = false;
+		this.state = State.UNLOCKED;
+	}
+	
+	void setClear(){
+		this.state = State.CLEAR;
 	}
 
 	boolean isMouseOver(){
@@ -168,7 +183,7 @@ class Star{
 	}
 
 	void printInfo(){
-		println("[Star]"+name+":("+x+","+y+"), w:"+w+",h:"+h+",isLocked:"+isLocked+",isMouseOver:"+isMouseOver());
+		println("[Star]"+name+":("+x+","+y+"), w:"+w+",h:"+h+",state:"+this.state+",isMouseOver:"+isMouseOver());
 	}
 }
 
@@ -343,10 +358,23 @@ void loadStars(){
 		int y = star.getInt("y");
 		int width = star.getInt("width");
 		int height = star.getInt("height");
-		boolean isLocked = star.getBoolean("isLocked");
+		String rawState = star.getString("state");
+		int state;
+		if(rawState.equals("starter")){
+			state = State.STARTER;
+		} else if (rawState.equals("locked")){
+			state = State.LOCKED;
+		} else if (rawState.equals("unlocked")){
+			state = State.UNLOCKED;
+		} else if (rawState.equals("clear")){
+			state = State.CLEAR;
+		} else {
+			state = State.LOCKED;
+			System.out.printf("WARNING: Can't interprete star state: %s --> %s\n", name, rawState);
+		}
 		PImage starImg = loadImage(imgBasePath + star.getString("imgPath"));
 		// create new star
-		stars[i] = new Star(name, x, y, width, height, starImg, placeholderImg, isLocked);
+		stars[i] = new Star(name, x, y, width, height, starImg, placeholderImg, state);
 		stars[i].setMass(star.getJSONArray("mass"));
 		stars[i].setMagnitude(star.getJSONArray("magnitude"));
 		stars[i].setVolume(star.getJSONArray("volume"));
@@ -403,7 +431,7 @@ void drawSceneStarInfo(){
 	drawProgressBar("Temperature", 450, 330, 0, 1000, 200, color(253, 215, 104));
 	drawProgressBar("Color", 450, 370, 0, 1000, 1000, color(229, 117, 42));
 	// draw button
-	if(currentStar.isLocked){
+	if(currentStar.state == State.LOCKED){
 		fill(209, 211, 212);
 	} else {
 		if (mouseX >= 450 && mouseX <= 860 && mouseY >= 415 && mouseY <= 465) {
@@ -416,7 +444,7 @@ void drawSceneStarInfo(){
 	rect(450, 415, 410, 50, 10);
 	// draw button text
 	textSize(22);
-	if(currentStar.isLocked){
+	if(currentStar.state == State.LOCKED){
 		fill(100);
 		text("‎Locked", 610, 428, 150, 80);
 	} else {
