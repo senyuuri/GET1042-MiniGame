@@ -12,7 +12,8 @@
             "volume": [0, 0],
             "temperature": [0, 0],
             "color": "N/A",
-            "state": "starter"
+            "state": "starter",
+            "unlock": []
         },
         {
             "name": "Open Cluster",
@@ -26,7 +27,8 @@
             "volume": [0, 0],
             "temperature": [0, 0],
             "color": "N/A",
-            "state": "starter"
+            "state": "starter",
+            "unlock": []
         },
         {
             "name": "Massive Star",
@@ -40,7 +42,8 @@
             "volume": [1, 9],
             "temperature": [3, 4],
             "color": "yellow",
-            "state": "unlocked"
+            "state": "unlocked",
+            "unlock": ["Red Supergiant"]
         },
         {
             "name": "Low-mass Star",
@@ -54,7 +57,8 @@
             "volume": [1, 9],
             "temperature": [2, 3],
             "color": "yellow",
-            "state": "unlocked"
+            "state": "unlocked",
+            "unlock": ["Red Giant"]
         },
         {
             "name": "Brown Dward",
@@ -68,7 +72,8 @@
             "volume": [1, 9],
             "temperature": [3, 4],
             "color": "red",
-            "state": "unlocked"
+            "state": "unlocked",
+            "unlock": []
         },
         {
             "name": "Red Supergiant",
@@ -82,7 +87,8 @@
             "volume": [1, 9],
             "temperature": [3, 4],
             "color": "yellow",
-            "state": "locked"
+            "state": "locked",
+            "unlock": ["Type II Supernova"]
         },
         {
             "name": "Red Giant",
@@ -96,7 +102,8 @@
             "volume": [1, 9],
             "temperature": [3, 4],
             "color": "red",
-            "state": "locked"
+            "state": "locked",
+            "unlock": ["Binary White Dwarf", "Planetary Nebula"]
         },
         {
             "name": "Type II Supernova",
@@ -110,7 +117,8 @@
             "volume": [1, 9],
             "temperature": [7, 8],
             "color": "many",
-            "state": "locked"
+            "state": "locked",
+            "unlock": ["Supernova Remnant", "Neutron Star", "Black Hole"]
         },
         {
             "name": "Binary White Dwarf",
@@ -124,7 +132,8 @@
             "volume": [1, 9],
             "temperature": [5, 6],
             "color": "white",
-            "state": "locked"
+            "state": "locked",
+            "unlock": ["Type la Supernova"]
         },
         {
             "name": "Planetary Nebula",
@@ -138,11 +147,12 @@
             "volume": [1, 9],
             "temperature": [4, 5],
             "color": "many",
-            "state": "locked"
+            "state": "locked",
+            "unlock": ["Nova"]
         },
         {
             "name": "Supernova Remnant",
-            "x": 800,
+            "x": 770,
             "y": 100,
             "width": 100,
             "height": 100,
@@ -152,11 +162,12 @@
             "volume": [1, 9],
             "temperature": [7, 8],
             "color": "many",
-            "state": "locked"
+            "state": "locked",
+            "unlock":[]
         },
         {
             "name": "Type la Supernova",
-            "x": 800,
+            "x": 770,
             "y": 350,
             "width": 80,
             "height": 80,
@@ -166,7 +177,8 @@
             "volume": [1, 9],
             "temperature": [7, 8],
             "color": "many",
-            "state": "locked"
+            "state": "locked",
+            "unlock":[]
         },
         {
             "name": "Nova",
@@ -180,12 +192,13 @@
             "volume": [1, 9],
             "temperature": [7, 8],
             "color": "many",
-            "state": "locked"
+            "state": "locked",
+            "unlock": ["White Dwarf"]
         },
         {
             "name": "Black Hole",
-            "x": 980,
-            "y": 140,
+            "x": 930,
+            "y": 105,
             "width": 150,
             "height": 70,
             "imgPath": "black_hole.png",
@@ -194,11 +207,12 @@
             "volume": [1, 9],
             "temperature": [6, 7],
             "color": "black",
-            "state": "locked"
+            "state": "locked",
+            "unlock": []
         },
         {
             "name": "Neutron Star",
-            "x": 980,
+            "x": 930,
             "y": 220,
             "width": 70,
             "height": 70,
@@ -208,11 +222,12 @@
             "volume": [1, 9],
             "temperature": [5, 6],
             "color": "white",
-            "state": "locked"
+            "state": "locked",
+            "unlock": ["Pulsar"]
         },
         {
             "name": "Pulsar",
-            "x": 1150,
+            "x": 1050,
             "y": 220,
             "width": 70,
             "height": 70,
@@ -222,11 +237,12 @@
             "volume": [1, 9],
             "temperature": [5, 6],
             "color": "white",
-            "state": "locked"
+            "state": "locked",
+            "unlock": []
         },
         {
             "name": "White Dwarf",
-            "x": 980,
+            "x": 930,
             "y": 430,
             "width": 70,
             "height": 70,
@@ -236,11 +252,12 @@
             "volume": [1, 9],
             "temperature": [3, 4],
             "color": "blue",
-            "state": "locked"
+            "state": "locked",
+            "unlock": ["Black Dwarf"]
         },
         {
             "name": "Black Dwarf",
-            "x": 1150,
+            "x": 1050,
             "y": 430,
             "width": 70,
             "height": 70,
@@ -250,8 +267,8 @@
             "volume": [1, 9],
             "temperature": [0, 1],
             "color": "black",
-            "state": "locked"
+            "state": "locked",
+            "unlock": ["White Dwarf"]
         }
-    ],
-    "arrowlist":[]
+    ]
 }

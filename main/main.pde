@@ -19,6 +19,7 @@ Random rand = new Random();
 JSONObject values;
 // initialise collection scene
 PImage cBackground;
+PImage trophy;
 SoundFile hover;
 SoundFile bgm;
 PFont nameFont;
@@ -170,12 +171,13 @@ class Star{
 		imageMode(CORNER);
 		// show name
 		if(this.state != State.LOCKED){
-			textFont(nameFont);
+			// textFont(nameFont);
+			textFont(defaultFont);
 			textSize(18);
 			fill(255);
 			text(this.name, x-w/2, y+h/2+10, 200, 200);
 			
-			textFont(defaultFont);
+			
 		}
 		popMatrix();
 		// reset to default 
@@ -348,6 +350,7 @@ void setup() {
 	//String[] fontList = PFont.list();
 	// load collection scene resources
 	cBackground = loadImage(imgBasePath + "sky_canvas.png");
+	trophy = loadImage(imgBasePath + "trophy.png");
 	hover = new SoundFile(this, "hover.mp3");
 	bgm = new SoundFile(this, "menu.mp3");
 	nameFont = createFont("caput.ttf", 32);
@@ -433,6 +436,12 @@ void drawSceneCollection() {
 			stars[i].draw();
 		}
 	}
+	// draw trophies
+	// TODO check if all clear
+	tint(90);
+	image(trophy, 1175, 210, 50, 75);
+	image(trophy, 1175, 420, 50, 75);
+	noTint();
 }
 
 void drawSceneStarInfo(){
