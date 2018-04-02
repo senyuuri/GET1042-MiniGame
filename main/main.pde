@@ -1,5 +1,9 @@
 import processing.sound.*;
 
+// DEBUG mode for factory scene
+// currentScene is ignored and always set to 4 
+boolean DEBUG_FACTORY = false;
+
 // using iPhone 6/7's aspect ratio
 int displayWidth = 1334;
 int displayHeight = 750;
@@ -15,6 +19,20 @@ PImage cBackground;
 SoundFile hover;
 // initialise info scene
 
+// initialise factory scene
+Machine[] m = new Machine[5];
+int selected = -1;
+int current = -1;
+int[] deg = {0, 0, 0, 0, 0};
+int speed = 0;
+int dir = -1;
+int rdir = -1;
+int[] chance = {3, 3, 3, 3, 3};
+float[] value = {-100, -100, -100, -100, -100};
+PImage[] image= new PImage[6];
+PImage[] scale = new PImage[5];
+PImage factoryimg;
+PImage pointerimg;
 
 
 /* ======================================================
@@ -151,6 +169,63 @@ class Star{
 	}
 }
 
+class Machine{
+	float inixpos;
+	float iniypos;
+	float xpos;
+	float ypos;
+	float xx;
+	float yy;
+	int h;
+	int w;
+	int type;
+	PImage img;
+	
+	Machine(float x, float y, int t, PImage m) { 
+		inixpos = x;
+		iniypos = y;
+		xpos = inixpos;
+		ypos = iniypos;
+		type = t;
+		img = m;
+		h = 60;
+		w = 160;
+		xx = 0;
+		yy = 0;
+	}
+	
+	void updatePos(){
+		if (selected == type){
+			if (!mousePressed){
+				selected = -1;
+				if (xpos >= 260 && xpos <= 320 && ypos >= 220 && ypos <= 260){
+					current = type;
+					xpos = 290;
+					ypos = 240;
+				}else{
+					if (current == type){
+						current = -1;
+					}
+					xpos = inixpos;
+					ypos = iniypos;
+				}
+			}else{
+				xpos = mouseX-w/2;
+				ypos = mouseY-h/2;
+			}
+		}else{
+			if (current != type){
+				xpos = inixpos;
+				ypos = iniypos;
+			}
+		}
+	}
+	
+	void display(){
+		image(img, xpos, ypos, w, h);
+	}
+}
+
 /* ======================================================
  * Initialisation
  * ====================================================== 
@@ -158,13 +233,22 @@ class Star{
 void setup() {
   	size(displayWidth, displayHeight);
 	background(0);
-	smooth();
+	smooth(4);
 	loadStars();
-	frameRate(30);
+	frameRate(300);
 	// load collection scene resources
 	cBackground = loadImage(imgBasePath + "sky_canvas_preview.png");
 	hover = new SoundFile(this, "hover.mp3");
-
+	// load factory scene resource
+	for (int i = 0; i < 6; i++){
+		image[i] = loadImage("../img/m"+str(i)+".png");
+	}
+	factoryimg = loadImage("../img/factory.png");
+	pointerimg = loadImage("../img/pointer.png");
+	for (int i = 0; i < 5; i++){
+		m[i] = new Machine(50, i*110+200, i, image[i]);
+		scale[i] = loadImage("../img/p"+str(i)+".png");
+	}
 }
 
 void loadStars(){
@@ -256,16 +340,170 @@ void drawProgressBar(String name, int x, int y, int min, int max, int value, col
 
 
 void drawSceneFactory(){
+	background(20, 40, 70); 
+	pushMatrix();
+	translate(650, 400);
+	rotate(radians(speed*.1*rdir));
+	rdir = -rdir;
+	image(factoryimg,-400, -250, 800, 500);
+	popMatrix();
+	
+	
+	for (int i = 0; i < 5; i++){
+		if(mouseX >= m[i].xpos && mouseX <= m[i].xpos + m[i].w && mouseY >= m[i].ypos && mouseY <= m[i].ypos + m[i].h && mousePressed){
+			if (selected == -1){
+				selected = i;
+			}
+		}
+		m[i].updatePos();
+		m[i].display();
+	}
+	
+	if (current != -1){  
+		if (current == 0){
+			value[current] = (float)Math.pow(10, deg[current]/45.0 - 1);
+			text(nfc(value[current], 1), 940, 680);
+			textSize(30);
+			text("Mass(solar mass)", 270, 210);
+			image(scale[current], 460, 400, 300, 150);
+		}else if (current == 1){
+			value[current] = 20-(float)deg[current]/180*40;
+			text(nfc(value[current], 1), 940, 680);      
+			textSize(30);
+			text("Surface Brightness(magnitude)", 270, 210);
+			image(scale[current], 460, 400, 300, 150);
+		}else if (current == 2){
+			value[current] = (float)Math.pow(10, deg[current]/20.0);
+			text(nfc(value[current], 1), 940, 680);
+			textSize(30);
+			text("Radius(km)", 270, 210);
+			image(scale[current], 460, 400, 300, 150);
+		}else if (current == 3){
+			value[current] = (float)Math.pow(10, deg[current]/20.0);
+			text(nfc(value[current], 1), 940, 680);
+			textSize(30);
+			text("Temperature(K)", 270, 210);
+			image(scale[current], 460, 400, 300, 150);
+		}else if (current == 4){
+			value[current] = deg[current]/180.0*7;
+			if (value[current]<1){
+				fill(255);
+			}else if (value[current]>=1 && value[current]<2){
+				fill(130, 250, 100);
+			}else if (value[current]>=2 && value[current]<3){
+				fill(255, 240, 80);
+			}else if (value[current]>=3 && value[current]<4){
+				fill(255, 270, 80);
+			}else if (value[current]>=4 && value[current]<5){
+				fill(255, 110, 80);
+			}else if (value[current]>=5 && value[current]<6){        
+				fill(100,200,255);
+			}else if (value[current]>=6 && value[current]<7){
+				fill(0);
+			}
+			image(scale[current], 460, 400, 300, 150);
+			rect(940, 660, 60, 30); 
+			fill(255);
+			textSize(30);
+			text("Colour", 270, 210);
+		}
+		
+		
+		pushMatrix();
+		translate(603, 556);
+		rotate(radians(0+deg[current]));
+		image(pointerimg, -140, -10, 150, 20);
+		popMatrix();
+		
+		fill(180, 50, 50);
+		noStroke();
+		rect(440, 650, 120, 50);
+		
+		textSize(30);
+		fill(255);
+		text("Mix!", 470, 685);
+		
+		textSize(20);
+		text(chance[current], 700, 680);
+		text("Chance(s) left   Value: ", 718, 680);
+		if(mouseX >= 440 && mouseX <= 560 && mouseY >= 670 && mouseY <= 720 && mousePressed & chance[current] != 0){
+			if(speed < 20){
+				speed = speed + 4;
+			}
+		}else{
+			if (speed > 0){
+				speed --;
+			}
+		}
+		if (deg[current] >= 180){
+			deg[current] = 180;
+			dir = -dir;
+		}else if (deg[current] <= 0){
+			deg[current] = 0;
+			dir = -dir;
+		}
+		deg[current] = deg[current] + speed * dir;
+	}
+	
+	noFill();
+	stroke(255);
+	rect(940, 50, 350, 200);
+	line(800, 270, 940, 150);
+	textSize(15);
+	if (value[0] == -100){text("Mass(solar mass): ???", 970, 80);}else{text("Mass(solar mass): "+nfc(value[0], 1), 970, 80);}
+	if (value[1] == -100){text("Surface Brightness(magnitude): ???", 970, 110);}else{text("Surface Brightness(magnitude): "+nfc(value[1], 1), 970, 110);}
+	if (value[2] == -100){text("Radius(km): ???", 970, 140);}else{text("Radius(km): "+nfc(value[2], 1), 970, 140);}
+	if (value[3] == -100){text("Temperature(K): ???", 970, 170);}else{text("Temperature(K): "+nfc(value[3], 1), 970, 170);}
+	if (value[4] == -100){text("Colour: ???", 970, 200);}else{
+		text("Colour: ", 970, 200);
+		noStroke();
+			if (value[4]<1){
+				fill(255);
+			}else if (value[4]<2){
+				fill(130, 250, 100);
+			}else if (value[4]<3){
+				fill(255, 240, 80);
+			}else if (value[4]<4){
+				fill(255, 270, 80);
+			}else if (value[4]<5){
+				fill(255, 110, 80);
+			}else if (value[4]<6){
+				fill(100,200,255);
+			}else if (value[4]<7){
+				fill(0);
+			}
+			rect(1030, 180, 60, 30); 
+			fill(255);
+
+	}
+	
+	if (value[0] != -100 && value[1] != -100 && value[2] != -100 && value[3] != -100 && value[4] != -100){
+	fill(180, 50, 50);
+	noStroke();
+	rect(1100, 450, 140, 50);
+		
+	textSize(30);
+	fill(255);
+	text("Bake!", 1130, 485);
+	}
+
+	textSize(10);
+	text(str(mouseX)+" "+str(mouseY), mouseX, mouseY);
 
 }
 
 
 void draw() {
-	if(currentScene == 0){
+	if(DEBUG_FACTORY){
+		drawSceneFactory();
+	}
+	else if(currentScene == 0){
 		drawSceneCollection();
 	} else if (currentScene == 1){
 		drawSceneCollection();
 		drawSceneStarInfo();
+	} else if (currentScene == 4){
+		drawSceneFactory();
 	}
 	
 	// show fps
@@ -293,6 +531,17 @@ void mouseClicked() {
 	else if(currentScene == 1){
 		if(mouseX<=420 || mouseY <= 100 || mouseX>=900 || mouseY>=650){
 			currentScene = 0;
+		}
+	}
+}
+
+void mouseReleased() {
+	if (currentScene == 4 && mouseX >= 440 && mouseX <= 560 && mouseY >= 670 && mouseY <= 720 && current != -1) {
+		if (chance[current] != 0){
+			chance[current] --;
+		}
+		if(chance[current] == 0){
+			m[current].img = image[5];      
 		}
 	}
 }
