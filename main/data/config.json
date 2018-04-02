@@ -11,7 +11,7 @@
             "magnitude": [0, 0],
             "volume": [0, 0],
             "temperature": [0, 0],
-            "color": "N/A",
+            "color": 0,
             "state": "starter",
             "unlock": []
         },
@@ -26,7 +26,7 @@
             "magnitude": [0, 0],
             "volume": [0, 0],
             "temperature": [0, 0],
-            "color": "N/A",
+            "color": 0,
             "state": "starter",
             "unlock": []
         },
@@ -41,7 +41,7 @@
             "magnitude": [-20, 5],
             "volume": [1, 9],
             "temperature": [3, 4],
-            "color": "yellow",
+            "color": 3,
             "state": "unlocked",
             "unlock": ["Red Supergiant"]
         },
@@ -56,7 +56,7 @@
             "magnitude": [0, 15],
             "volume": [1, 9],
             "temperature": [2, 3],
-            "color": "yellow",
+            "color": 3,
             "state": "unlocked",
             "unlock": ["Red Giant"]
         },
@@ -71,7 +71,7 @@
             "magnitude": [15, 20],
             "volume": [1, 9],
             "temperature": [3, 4],
-            "color": "red",
+            "color": 5,
             "state": "unlocked",
             "unlock": []
         },
@@ -86,7 +86,7 @@
             "magnitude": [-20, 5],
             "volume": [1, 9],
             "temperature": [3, 4],
-            "color": "yellow",
+            "color": 3,
             "state": "locked",
             "unlock": ["Type II Supernova"]
         },
@@ -101,7 +101,7 @@
             "magnitude": [-10, -5],
             "volume": [1, 9],
             "temperature": [3, 4],
-            "color": "red",
+            "color": 5,
             "state": "locked",
             "unlock": ["Binary White Dwarf", "Planetary Nebula"]
         },
@@ -116,7 +116,7 @@
             "magnitude": [0, 5],
             "volume": [1, 9],
             "temperature": [7, 8],
-            "color": "many",
+            "color": 0,
             "state": "locked",
             "unlock": ["Supernova Remnant", "Neutron Star", "Black Hole"]
         },
@@ -131,7 +131,7 @@
             "magnitude": [5, 10],
             "volume": [1, 9],
             "temperature": [5, 6],
-            "color": "white",
+            "color": 1,
             "state": "locked",
             "unlock": ["Type la Supernova"]
         },
@@ -146,7 +146,7 @@
             "magnitude": [5, 15],
             "volume": [1, 9],
             "temperature": [4, 5],
-            "color": "many",
+            "color": 0,
             "state": "locked",
             "unlock": ["Nova"]
         },
@@ -161,7 +161,7 @@
             "magnitude": [-20, -15],
             "volume": [1, 9],
             "temperature": [7, 8],
-            "color": "many",
+            "color": 0,
             "state": "locked",
             "unlock":[]
         },
@@ -176,7 +176,7 @@
             "magnitude": [-20, -15],
             "volume": [1, 9],
             "temperature": [7, 8],
-            "color": "many",
+            "color": 0,
             "state": "locked",
             "unlock":[]
         },
@@ -191,7 +191,7 @@
             "magnitude": [0, 15],
             "volume": [1, 9],
             "temperature": [7, 8],
-            "color": "many",
+            "color": 0,
             "state": "locked",
             "unlock": ["White Dwarf"]
         },
@@ -206,7 +206,7 @@
             "magnitude": [-15, -20],
             "volume": [1, 9],
             "temperature": [6, 7],
-            "color": "black",
+            "color": 7,
             "state": "locked",
             "unlock": []
         },
@@ -221,7 +221,7 @@
             "magnitude": [-20, -15],
             "volume": [1, 9],
             "temperature": [5, 6],
-            "color": "white",
+            "color": 1,
             "state": "locked",
             "unlock": ["Pulsar"]
         },
@@ -236,7 +236,7 @@
             "magnitude": [-20, -15],
             "volume": [1, 9],
             "temperature": [5, 6],
-            "color": "white",
+            "color": 1,
             "state": "locked",
             "unlock": []
         },
@@ -251,7 +251,7 @@
             "magnitude": [10, 15],
             "volume": [1, 9],
             "temperature": [3, 4],
-            "color": "blue",
+            "color": 6,
             "state": "locked",
             "unlock": ["Black Dwarf"]
         },
@@ -266,7 +266,7 @@
             "magnitude": [-20, -15],
             "volume": [1, 9],
             "temperature": [0, 1],
-            "color": "black",
+            "color": 7,
             "state": "locked",
             "unlock": ["White Dwarf"]
         }
