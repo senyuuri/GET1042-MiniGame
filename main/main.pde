@@ -2,7 +2,7 @@ import processing.sound.*;
 import java.util.Random;
 
 // DEBUG mode for factory scene
-// currentScene is ignored and always set to 4 
+// currentScene is ignored and is always set to 4 
 boolean DEBUG_FACTORY = false;
 
 // using iPhone 6/7's aspect ratio
@@ -20,6 +20,7 @@ JSONObject values;
 // initialise collection scene
 PImage cBackground;
 SoundFile hover;
+SoundFile bgm;
 // initialise info scene
 
 // initialise factory scene
@@ -56,7 +57,7 @@ class Star{
 	boolean isFXPlayed;
 	PImage starImg, placeholderImg;
 
-	Star(String name, int x, int y, int w, int h, PImage starImage, PImage placeholderImg){
+	Star(String name, int x, int y, int w, int h, PImage starImage, PImage placeholderImg, boolean isLocked){
 		this.name = name;
 		this.x = x; 
 		this.y = y;
@@ -64,8 +65,7 @@ class Star{
 		this.h = h;
 		this.origW = w;
 		this.origH = h;
-		// TODO change to true
-		this.isLocked = true;
+		this.isLocked = isLocked;
 		this.starImg = starImage;
 		this.isFXPlayed = false;
 		this.placeholderImg =  placeholderImg;
@@ -116,7 +116,6 @@ class Star{
 
 			if(isLocked){
 				image(placeholderImg, x, y, w, h);
-				System.out.printf("%d %d %d %d\n", x, y, w, h);
 			} else {
 				image(starImg, x, y, w, h);
 			}
@@ -207,8 +206,8 @@ class BgStar{
 			this.brightness -= delta / 60;
 		}
 
-		if(this.brightness >= 1.0){
-			this.brightness = 1.0;
+		if(this.brightness >= 0.8){
+			this.brightness = 0.8;
 			this.isIncrease = false;
 		} 
 		else if(this.brightness <= 0.0){
@@ -311,8 +310,10 @@ void setup() {
 	// load collection scene resources
 	cBackground = loadImage(imgBasePath + "sky_canvas.png");
 	hover = new SoundFile(this, "hover.mp3");
+	bgm = new SoundFile(this, "menu.mp3");
+	bgm.play();
 	// create background stars
-	for(int i=0; i < 100; i++){
+	for(int i=0; i < bgstars.length; i++){
 		bgstars[i] = new BgStar();
 	}
 	// load factory scene resource
@@ -342,9 +343,10 @@ void loadStars(){
 		int y = star.getInt("y");
 		int width = star.getInt("width");
 		int height = star.getInt("height");
+		boolean isLocked = star.getBoolean("isLocked");
 		PImage starImg = loadImage(imgBasePath + star.getString("imgPath"));
 		// create new star
-		stars[i] = new Star(name, x, y, width, height, starImg, placeholderImg);
+		stars[i] = new Star(name, x, y, width, height, starImg, placeholderImg, isLocked);
 		stars[i].setMass(star.getJSONArray("mass"));
 		stars[i].setMagnitude(star.getJSONArray("magnitude"));
 		stars[i].setVolume(star.getJSONArray("volume"));
@@ -365,8 +367,6 @@ void drawSceneCollection() {
 	// draw background stars
 	for(int i=0; i < bgstars.length; i++){
 		if(bgstars[i] != null){
-			if(i == 0)
-				print(i, bgstars[i].brightness);
 			bgstars[i].draw();
       		
 		}
@@ -403,13 +403,26 @@ void drawSceneStarInfo(){
 	drawProgressBar("Temperature", 450, 330, 0, 1000, 200, color(253, 215, 104));
 	drawProgressBar("Color", 450, 370, 0, 1000, 1000, color(229, 117, 42));
 	// draw button
-	if (mouseX >= 450 && mouseX <= 860 && mouseY >= 415 && mouseY <= 465) {
+	if(currentStar.isLocked){
 		fill(209, 211, 212);
 	} else {
-		fill(255, 255, 255);
+		if (mouseX >= 450 && mouseX <= 860 && mouseY >= 415 && mouseY <= 465) {
+			fill(209, 211, 212);
+		} else {
+			fill(255, 255, 255);
+		}
 	}
 	stroke(0);
 	rect(450, 415, 410, 50, 10);
+	// draw button text
+	textSize(22);
+	if(currentStar.isLocked){
+		fill(100);
+		text("‎Locked", 610, 428, 150, 80);
+	} else {
+		fill(50);
+		text("Start", 625, 428, 150, 80);
+	}
 }
 
 void drawProgressBar(String name, int x, int y, int min, int max, int value, color c){

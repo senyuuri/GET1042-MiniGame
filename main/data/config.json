@@ -11,7 +11,8 @@
             "magnitude": [0, 0],
             "volume": [0, 0],
             "temperature": [0, 0],
-            "color": "N/A"
+            "color": "N/A",
+            "isLocked": false
         },
         {
             "name": "Open Cluster",
@@ -19,12 +20,13 @@
             "y": 400,
             "width": 100,
             "height": 100,
-            "imgPath": "placeholder.png",
+            "imgPath": "protostar.png",
             "mass": [0, 0],
             "magnitude": [0, 0],
             "volume": [0, 0],
             "temperature": [0, 0],
-            "color": "N/A"
+            "color": "N/A",
+            "isLocked": false
         },
         {
             "name": "Massive Star",
@@ -37,7 +39,8 @@
             "magnitude": [-20, 5],
             "volume": [1, 9],
             "temperature": [3, 4],
-            "color": "yellow"
+            "color": "yellow",
+            "isLocked": true
         },
         {
             "name": "Low-mass Star",
@@ -50,7 +53,8 @@
             "magnitude": [0, 15],
             "volume": [1, 9],
             "temperature": [2, 3],
-            "color": "yellow"
+            "color": "yellow",
+            "isLocked": true
         },
         {
             "name": "Brown Dward",
@@ -63,7 +67,8 @@
             "magnitude": [15, 20],
             "volume": [1, 9],
             "temperature": [3, 4],
-            "color": "red"
+            "color": "red",
+            "isLocked": true
         },
         {
             "name": "Red Supergiant",
@@ -76,7 +81,8 @@
             "magnitude": [-20, 5],
             "volume": [1, 9],
             "temperature": [3, 4],
-            "color": "yellow"
+            "color": "yellow",
+            "isLocked": true
         },
         {
             "name": "Red Giant",
@@ -89,7 +95,8 @@
             "magnitude": [-10, -5],
             "volume": [1, 9],
             "temperature": [3, 4],
-            "color": "red"
+            "color": "red",
+            "isLocked": true
         },
         {
             "name": "Type II Supernova",
@@ -102,7 +109,8 @@
             "magnitude": [0, 5],
             "volume": [1, 9],
             "temperature": [7, 8],
-            "color": "many"
+            "color": "many",
+            "isLocked": true
         },
         {
             "name": "Binary White Dwarf",
@@ -115,7 +123,8 @@
             "magnitude": [5, 10],
             "volume": [1, 9],
             "temperature": [5, 6],
-            "color": "white"
+            "color": "white",
+            "isLocked": true
         },
         {
             "name": "Planetary Nebula",
@@ -128,7 +137,8 @@
             "magnitude": [5, 15],
             "volume": [1, 9],
             "temperature": [4, 5],
-            "color": "many"
+            "color": "many",
+            "isLocked": true
         },
         {
             "name": "Supernova Remnant",
@@ -141,7 +151,8 @@
             "magnitude": [-20, -15],
             "volume": [1, 9],
             "temperature": [7, 8],
-            "color": "many"
+            "color": "many",
+            "isLocked": true
         },
         {
             "name": "Type la Supernova",
@@ -154,7 +165,8 @@
             "magnitude": [-20, -15],
             "volume": [1, 9],
             "temperature": [7, 8],
-            "color": "many"
+            "color": "many",
+            "isLocked": true
         },
         {
             "name": "Nova",
@@ -167,7 +179,8 @@
             "magnitude": [0, 15],
             "volume": [1, 9],
             "temperature": [7, 8],
-            "color": "many"
+            "color": "many",
+            "isLocked": true
         },
         {
             "name": "Black Hole",
@@ -180,7 +193,8 @@
             "magnitude": [-15, -20],
             "volume": [1, 9],
             "temperature": [6, 7],
-            "color": "black"
+            "color": "black",
+            "isLocked": true
         },
         {
             "name": "Neutron Star",
@@ -193,7 +207,8 @@
             "magnitude": [-20, -15],
             "volume": [1, 9],
             "temperature": [5, 6],
-            "color": "white"
+            "color": "white",
+            "isLocked": true
         },
         {
             "name": "Pulsar",
@@ -206,7 +221,8 @@
             "magnitude": [-20, -15],
             "volume": [1, 9],
             "temperature": [5, 6],
-            "color": "white"
+            "color": "white",
+            "isLocked": true
         },
         {
             "name": "White Dwarf",
@@ -219,7 +235,8 @@
             "magnitude": [10, 15],
             "volume": [1, 9],
             "temperature": [3, 4],
-            "color": "blue"
+            "color": "blue",
+            "isLocked": true
         },
         {
             "name": "Black Dwarf",
@@ -232,7 +249,8 @@
             "magnitude": [-20, -15],
             "volume": [1, 9],
             "temperature": [0, 1],
-            "color": "black"
+            "color": "black",
+            "isLocked": true
         }
     ],
     "arrowlist":[]
