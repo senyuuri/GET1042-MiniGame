@@ -1,4 +1,5 @@
 import processing.sound.*;
+import java.util.Random;
 
 // DEBUG mode for factory scene
 // currentScene is ignored and always set to 4 
@@ -10,8 +11,10 @@ int displayHeight = 750;
 String imgBasePath = "../img/";
 String placeholderPath = imgBasePath + "placeholder.png";
 int currentScene = 0;
+BgStar[] bgstars = new BgStar[100];
 Star[] stars = new Star[20];
 Star currentStar;
+Random rand = new Random();
 // JSON values from config.json
 JSONObject values;
 // initialise collection scene
@@ -52,6 +55,7 @@ class Star{
   	boolean isLocked;
 	boolean isFXPlayed;
 	PImage starImg, placeholderImg;
+
 	Star(String name, int x, int y, int w, int h, PImage starImage, PImage placeholderImg){
 		this.name = name;
 		this.x = x; 
@@ -61,7 +65,7 @@ class Star{
 		this.origW = w;
 		this.origH = h;
 		// TODO change to true
-		this.isLocked = false;
+		this.isLocked = true;
 		this.starImg = starImage;
 		this.isFXPlayed = false;
 		this.placeholderImg =  placeholderImg;
@@ -169,6 +173,74 @@ class Star{
 	}
 }
 
+class BgStar{
+	int x;
+	int y;
+	float size;
+	float brightness;
+	//change of brightness in a second
+	float delta;
+	boolean isIncrease;
+	int color_idx;
+	
+	BgStar(){
+		this.x = rand.nextInt(displayWidth);
+		this.y = rand.nextInt(displayHeight);
+		this.size = 5.0f + rand.nextFloat() * 5.0f;
+		this.brightness = rand.nextFloat() * 1.0f;
+		this.delta = 0.7;
+		this.isIncrease = true;
+		this.color_idx = 0;
+		// randomly pick some stars to be colored yellow and blue 
+		int tmp = rand.nextInt(100);
+		if(tmp < 10 ){
+			this.color_idx = 1;
+		}else if(tmp > 90){
+			this.color_idx = 2;
+		}
+	}
+
+	void twinkle(){
+		if(isIncrease){
+			this.brightness += delta / 60;
+		} else {
+			this.brightness -= delta / 60;
+		}
+
+		if(this.brightness >= 1.0){
+			this.brightness = 1.0;
+			this.isIncrease = false;
+		} 
+		else if(this.brightness <= 0.0){
+			this.brightness = 0.0;
+			this.isIncrease = true;
+		}
+	}
+
+	void draw(){
+		pushMatrix();
+		translate(this.x, this.y);
+		if(color_idx == 0){
+			// white 
+			fill(255, 255, 255, Math.round(this.brightness * 255));
+		}
+		else if(color_idx == 1){
+			// yellow
+			scale(1.2);
+			fill(255, 255, 0, Math.round(this.brightness * 255));
+		}
+		else{
+			// blue
+			scale(1.2);
+			fill(0, 153, 255, Math.round(this.brightness * 255));
+		}
+		noStroke();
+		ellipse(0, 0, this.size/2, this.size/2);
+		twinkle();
+		popMatrix();
+	}
+}
+
 class Machine{
 	float inixpos;
 	float iniypos;
@@ -235,10 +307,14 @@ void setup() {
 	background(0);
 	smooth(4);
 	loadStars();
-	frameRate(300);
+	frameRate(60);
 	// load collection scene resources
-	cBackground = loadImage(imgBasePath + "sky_canvas_preview.png");
+	cBackground = loadImage(imgBasePath + "sky_canvas.png");
 	hover = new SoundFile(this, "hover.mp3");
+	// create background stars
+	for(int i=0; i < 100; i++){
+		bgstars[i] = new BgStar();
+	}
 	// load factory scene resource
 	for (int i = 0; i < 6; i++){
 		image[i] = loadImage("../img/m"+str(i)+".png");
@@ -286,6 +362,15 @@ void drawSceneCollection() {
 	imageMode(CORNER);
 	background(0);
 	image(cBackground, 0, 0, displayWidth, displayHeight);
+	// draw background stars
+	for(int i=0; i < bgstars.length; i++){
+		if(bgstars[i] != null){
+			if(i == 0)
+				print(i, bgstars[i].brightness);
+			bgstars[i].draw();
+      		
+		}
+	}
 	// draw stars
 	for(int i = 0; i < stars.length; i++){
 		if(stars[i] != null){
