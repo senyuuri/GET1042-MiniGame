@@ -67,6 +67,7 @@ class Star{
 	boolean isFXPlayed;
 	PImage starImg, placeholderImg;
 	int state;
+	ArrayList<String> next;
 
 	Star(String name, int x, int y, int w, int h, PImage starImage, PImage placeholderImg, int state){
 		this.name = name;
@@ -84,8 +85,9 @@ class Star{
 		this.magnitude = new int[2];
 		this.volume = new int[2];
 		this.temperature = new int[2];
+		this.next = new ArrayList<String>();
 		this.ccolor = "";
-		printInfo();
+		//printInfo();
 	}
 
 	void setMass(JSONArray raw){
@@ -110,6 +112,10 @@ class Star{
 
 	void setColor(String ccolor){
 		this.ccolor = ccolor;
+	}
+
+	void addNext(String nextstar){
+		this.next.add(nextstar); //<>//
 	}
 
 	int getAvgMass(){
@@ -209,7 +215,11 @@ class Star{
 
 	void printInfo(){
 		println("[Star]"+name+":("+x+","+y+"), w:"+w+",h:"+h+",state:"+this.state+",isMouseOver:"+isMouseOver());
-	}
+		for(int i=0; i < this.next.size(); i++){
+      print(this.next.get(i));
+	  }
+    println("");
+  }
 }
 
 class BgStar{
@@ -337,6 +347,18 @@ class Machine{
 	}
 }
 
+void unlockNextStage(Star currStar){
+	for(int i=0; i<currStar.next.size(); i++){
+		String nextName = currStar.next.get(i);
+		for(int j=0; j<stars.length; j++){
+			if(nextName == stars[j].name){
+				stars[j].unlock();
+			}
+		}
+	}
+
+}
+
 /* ======================================================
  * Initialisation
  * ====================================================== 
@@ -412,6 +434,12 @@ void loadStars(){
 		stars[i].setVolume(star.getJSONArray("volume"));
 		stars[i].setTemperature(star.getJSONArray("temperature"));
 		stars[i].setColor(star.getString("color"));
+    JSONArray unlock = star.getJSONArray("unlock"); 
+		String[] nextlist = unlock.getStringArray();
+		for(int j=0; j < nextlist.length; j++){
+			stars[i].addNext(nextlist[j]);
+		}
+    stars[i].printInfo();
 	}
 }
 
