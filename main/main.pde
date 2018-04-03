@@ -119,7 +119,7 @@ class Star{
     }
 
     void addNext(String nextstar){
-        this.next.add(nextstar); //<>//
+        this.next.add(nextstar);
     }
 
     int getAvgMass(){
@@ -353,10 +353,12 @@ class Machine{
 
 void unlockNextStage(Star currStar){
     for(int i=0; i<currStar.next.size(); i++){
-        String nextName = currStar.next.get(i);
+        String nextName = currStar.next.get(i); //<>//
         for(int j=0; j<stars.length; j++){
-            if(nextName == stars[j].name){
-                stars[j].unlock();
+            if(stars[j] != null){
+              if(nextName.equals(stars[j].name)){
+                  stars[j].unlock();
+              }
             }
         }
     }
@@ -727,7 +729,7 @@ void drawComplete(){
 	stroke(0, 201, 211);
 	rect(420, 100, 480, 490, 15);
 	// draw star
-	if(currentStar.state == State.LOCKED){
+	if(currentStar.state == State.UNLOCKED){
 		image(currentStar.placeholderImg, 560, 200, 200, 200);
 	}else{
 		image(currentStar.starImg, 560, 200, 200, 200);
@@ -747,7 +749,7 @@ void drawComplete(){
 	fill(50);
 	text("‎Back", 630, 528, 150, 80);
 	
-	if(currentStar.state == State.LOCKED){  
+	if(currentStar.state == State.UNLOCKED){  
 		fill(255);
 		text("You failed", 600, 440);
 		if (mouseX >= 450 && mouseX <= 860 && mouseY >= 455 && mouseY <= 505) {
@@ -839,11 +841,10 @@ void mouseClicked() {
 			if (Math.pow(10, currentStar.volume[0]) <= value[2] && Math.pow(10, currentStar.volume[1]) >= value[2]){success ++;}
 			if (Math.pow(10, currentStar.temperature[0]) <= value[3] && Math.pow(10, currentStar.temperature[1]) >= value[3]){success ++;}
 			if (currentStar.ccolor == 0 || currentStar.ccolor == int(value[4])+1){success ++;}
-			if(success == 5){
+			if(success == 5){ //<>//
 				//TBC
 				currentStar.setClear();
 				unlockNextStage(currentStar);
-				currentStar.unlock();
 				score.play();
 				complete = true;
 			}else{
@@ -856,7 +857,7 @@ void mouseClicked() {
 				currentScene = 0;
 				resetFactory();
 			}
-			if (currentStar.state == State.LOCKED && mouseX >= 450 && mouseX <= 860 && mouseY >= 455 && mouseY <= 505){
+			if (currentStar.state == State.UNLOCKED && mouseX >= 450 && mouseX <= 860 && mouseY >= 455 && mouseY <= 505){
 				currentScene = 4;
 				resetFactory();
 			}
