@@ -5,6 +5,10 @@ import java.util.Random;
 // currentScene is ignored and is always set to 4 
 boolean DEBUG_FACTORY = false;
 
+// DEMO mode 
+// All stars will be unlocked
+boolean DEMO_MODE = true;
+
 // using iPhone 6/7's aspect ratio
 int displayWidth = 1334;
 int displayHeight = 750;
@@ -81,7 +85,11 @@ class Star{
         this.h = h;
         this.origW = w;
         this.origH = h;
-        this.state = state;
+		if(DEMO_MODE){
+			this.state = State.CLEAR;
+		}else{
+			this.state = state;
+		}
         this.starImg = starImage;
         this.isFXPlayed = false;
         this.placeholderImg =  placeholderImg;
@@ -473,7 +481,9 @@ void drawSceneCollection() {
     }
     // draw trophies
     // TODO check if all clear
-    tint(90);
+	if(!DEMO_MODE){
+    	tint(90);
+	}
     image(trophy, 1175, 210, 50, 75);
     image(trophy, 1175, 420, 50, 75);
     noTint();
@@ -499,11 +509,11 @@ void drawSceneStarInfo(){
     textFont(defaultFont);
 
     // draw progress bar
-    drawProgressBar("Mass", 450, 210, 0, 1000, 800, color(251, 190, 71));
-    drawProgressBar("Magnitude", 450, 250, 0, 1000, 400, color(242, 120, 79));
-    drawProgressBar("Radius", 450, 290, 0, 1000, 500, color(219, 94, 92));
-    drawProgressBar("Temperature", 450, 330, 0, 1000, 200, color(253, 215, 104));
-    drawProgressBar("Color", 450, 370, 0, 1000, 1000, color(229, 117, 42));
+    drawProgressBar("Mass", "Ms", 450, 210, 0, 1000, currentStar.mass, color(251, 190, 71));
+    drawProgressBar("Magnitude", "", 450, 250, -20, 20, currentStar.magnitude, color(242, 120, 79));
+    drawProgressBar("Radius", "km", 450, 290, 0, 9, currentStar.volume, color(219, 94, 92));
+    drawProgressBar("Temperature", "k", 450, 330, 0, 9, currentStar.temperature, color(253, 215, 104));
+    drawColorBar(currentStar.ccolor, 450, 370);
     // draw button
     if(currentStar.state == State.LOCKED){
         fill(209, 211, 212);
@@ -534,7 +544,7 @@ boolean isOverStartButton(){
     return false;
 }
 
-void drawProgressBar(String name, int x, int y, int min, int max, int value, color c){
+void drawProgressBar(String name, String unit, int x, int y, int min, int max, int[] value, color c){
     fill(255);
     textSize(15);
     text(name, x, y, 100, 50);
@@ -542,9 +552,58 @@ void drawProgressBar(String name, int x, int y, int min, int max, int value, col
     fill(255);
     rect(x+100, y, 310, 20, 5);
     fill(c);
-    rect(x+100, y, 310 * (1.0f * value/max), 20, 5);	
+	int min_len = Math.round(310.0 * (value[0] - min) / (max - min));
+	int max_len = Math.round(310.0 * (value[1] - min) / (max - min));
+	// draw base bar
+    rect(x + 100, y, min_len, 20, 5);
+	// draw range bar
+	fill(c, 128);
+	if(!unit.equals("km") && (value[0] == 1 || value[0] == 10 || value[0] == -20)){
+		rect(x + 100 + min_len, y, max_len-min_len, 20, 5);
+	} else{
+		rect(x + 80 + min_len, y, max_len-min_len, 20, 5);
+	}
+	// range text
+	fill(150);
+	if(unit.equals("km")){
+		text(value[0] + "~" + value[1] + " " + unit, x+350, y, 150, 100);
+	} else if(unit.equals("")){
+		text(value[0] + "~" + value[1] + " " + unit, x+360, y, 150, 100);
+	} else if(unit.equals("Ms")){
+		text("10^" + value[0] +  "~" + "10^" + value[1] + " "+ unit, x+280, y, 150, 100);
+	}else {
+		text("10^" + value[0] +  "~" + "10^" + value[1] + " "+ unit, x+320, y, 150, 100);
+	}
 }
 
+void drawColorBar(int ccode, int x, int y){
+	fill(255);
+    textSize(15);
+    text("Color", x, y, 100, 50);
+    noStroke();
+    
+	if (ccode == 0 || ccode == 1){
+		fill(255);
+	}else if (ccode == 2){
+		fill(130, 250, 100);
+	}else if (ccode == 3){
+		fill(255, 240, 80);
+	}else if (ccode == 4){
+		fill(255, 170, 80);
+	}else if (ccode == 5){
+		fill(255, 70, 30);
+	}else if (ccode == 6){        
+		fill(100,200,255);
+	}else if (ccode == 7 ){
+		fill(0);
+	}
+    rect(x+100, y, 310, 20, 5);
+	if (ccode == 0){
+		fill(150);
+    	textSize(15);
+    	text("Any Color", x+215, y, 100, 50);
+	}
+}
 
 void drawSceneFactory(){
 	background(20, 40, 70);
