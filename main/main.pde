@@ -12,7 +12,7 @@ boolean DEMO_MODE = false;
 // using iPhone 6/7's aspect ratio
 int displayWidth = 1334;
 int displayHeight = 750;
-String imgBasePath = "../img/";
+String imgBasePath = "img/";
 String placeholderPath = imgBasePath + "placeholder.png";
 int currentScene = 0;
 BgStar[] bgstars = new BgStar[100];
@@ -402,13 +402,13 @@ void setup() {
     }
     // load factory scene resource
     for (int i = 0; i < 6; i++){
-        image[i] = loadImage("../img/m"+str(i)+".png");
+        image[i] = loadImage(imgBasePath + "m"+str(i)+".png");
     }
-    factoryimg = loadImage("../img/factory.png");
-    pointerimg = loadImage("../img/pointer.png");
+    factoryimg = loadImage(imgBasePath + "factory.png");
+    pointerimg = loadImage(imgBasePath + "pointer.png");
     for (int i = 0; i < 5; i++){
         m[i] = new Machine(50, i*110+200, i, image[i]);
-        scale[i] = loadImage("../img/p"+str(i)+".png");
+        scale[i] = loadImage(imgBasePath + "p"+str(i)+".png");
     }
 }
 
