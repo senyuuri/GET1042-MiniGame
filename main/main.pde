@@ -7,7 +7,7 @@ boolean DEBUG_FACTORY = false;
 
 // DEMO mode 
 // All stars will be unlocked
-boolean DEMO_MODE = true;
+boolean DEMO_MODE = false;
 
 // using iPhone 6/7's aspect ratio
 int displayWidth = 1334;
@@ -886,7 +886,7 @@ void mouseClicked() {
             // click outside the message box, return to collection scene
             currentScene = 0;
         }
-        else if (isOverStartButton() && currentStar.state == State.UNLOCKED){
+        else if (isOverStartButton() && (currentStar.state == State.UNLOCKED || currentStar.state == State.CLEAR)){
             // click on start button, forward to factory scene
             
             currentScene = 4;

@@ -186,7 +186,7 @@
             "y": 470,
             "width": 80,
             "height": 80,
-            "imgPath": "placeholder.png",
+            "imgPath": "type_ii_supernova.png",
             "mass": [100, 1000],
             "magnitude": [0, 15],
             "volume": [1, 9],
