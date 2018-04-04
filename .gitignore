@@ -1,1 +1,7 @@
 main/application.macosx/
+main/application.windows32/
+main/application.windows64/
+main/demo/
+main/demo-unlocked/
+main/*.autosave
+.DS_Store

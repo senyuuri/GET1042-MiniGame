@@ -1,5 +1,4 @@
 import processing.sound.*;
-import java.util.Random;
 
 // DEBUG mode for factory scene
 // currentScene is ignored and is always set to 4 
@@ -18,7 +17,6 @@ int currentScene = 0;
 BgStar[] bgstars = new BgStar[100];
 Star[] stars = new Star[20];
 Star currentStar;
-Random rand = new Random();
 // JSON values from config.json
 JSONObject values;
 // initialise collection scene
@@ -245,10 +243,10 @@ class BgStar{
     int color_idx;
     
     BgStar(){
-        this.x = rand.nextInt(displayWidth);
-        this.y = rand.nextInt(displayHeight);
-        this.size = 5.0f + rand.nextFloat() * 5.0f;
-        this.brightness = rand.nextFloat() * 1.0f;
+        this.x = random(displayWidth);
+        this.y = random(displayHeight);
+        this.size = random(5.0, 10.0);
+        this.brightness = random(0.0, 1.0);
         this.delta = 0.7;
         this.isIncrease = true;
         this.color_idx = 0;
@@ -381,7 +379,7 @@ void setup() {
       size(displayWidth, displayHeight);
     background(0);
     smooth(4);
-    loadStars();
+    //loadStars();
     frameRate(60);
     //String[] fontList = PFont.list();
     // load collection scene resources
@@ -410,6 +408,10 @@ void setup() {
         m[i] = new Machine(50, i*110+200, i, image[i]);
         scale[i] = loadImage(imgBasePath + "p"+str(i)+".png");
     }
+}
+
+void loadStar(HashMap<String, Object> json){
+    
 }
 
 void loadStars(){

@@ -3,10 +3,22 @@
 <head>
     <title>Hello Web - Processing.js Test</title>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/processing.js/1.6.6/processing.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(function(){
+        var pjs = Processing.getInstanceById("skycanvas");
+        var json = $.get("main/data/config.json");
+        var data = eval("("+json+")");
+        if(data) {
+           for(let i = 0; i < data.starlist.length; i++) {
+             	var star = data.starlist[p];
+             	console.log(star);
+        	}
+        }
+    });
+    </script>
 </head>
 	<body>
-		<h1>Processing.js Test</h1>
-		<p>This is my first Processing.js web-based sketch:</p>
-		<canvas data-processing-sources="main/main.pde"></canvas>
-</body>
+		<canvas id="skycanvas" data-processing-sources="main/main.pde"></canvas>
+	</body>
 </html>
