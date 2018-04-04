@@ -4,21 +4,46 @@
     <title>Hello Web - Processing.js Test</title>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/processing.js/1.6.6/processing.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript">
-    $(function(){
-        var pjs = Processing.getInstanceById("skycanvas");
-        var json = $.get("main/data/config.json");
-        var data = eval("("+json+")");
-        if(data) {
-           for(let i = 0; i < data.starlist.length; i++) {
-             	var star = data.starlist[p];
-             	console.log(star);
-        	}
-        }
-    });
-    </script>
+    
 </head>
-	<body>
-		<canvas id="skycanvas" data-processing-sources="main/main.pde"></canvas>
-	</body>
+<body>
+	<canvas id="skycanvas" data-processing-sources="main/main.pde"></canvas>
+</body>
+    <script type="text/javascript">
+    $(function() {
+        var pjs = Processing.getInstanceById('skycanvas');
+        console.log(pjs)
+        var bound = false;
+        function bindJavascript() {
+            var pjs = Processing.getInstanceById('skycanvas');
+            console.log("binding");
+            console.log(pjs);
+            if(pjs!=null) {
+                pjs.bindJavascript(this);
+                bound = true; 
+            }
+            if(!bound) setTimeout(bindJavascript, 250);
+        }
+        bindJavascript();
+    
+        $.get("main/data/config.json").done(function(raw){
+            var pjs = Processing.getInstanceById('skycanvas');
+            var starlist = raw.starlist;
+            console.log(starlist);
+            console.log(pjs)
+            for(let i = 0; i < starlist.length; i++) {
+                var star = starlist[i];
+                pjs.loadSingleStar(
+                    star.name,
+                    star.x,
+                    star.y,
+                    star.width,
+                    star.height,
+                    star.imgPath,
+                    star.state
+                );
+            }
+        });
+    });
+        </script>
 </html>

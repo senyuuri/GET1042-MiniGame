@@ -1,3 +1,4 @@
+/* @pjs preload="img/badge.png,img/binary_white_dwarf.png,img/black_dwarf.png,img/black_hole.png,img/brown_dwarf.png,img/empty_bottle.png,img/factory_hand.png,img/factory.png,img/low_mass_star.png,img/m0.png,img/m1.png,img/m2.png,img/m3.png,img/m4.png,img/m5.png,img/massive_star.png,img/molecular_cloud.png,img/neutron_star.png,img/p0.png,img/p1.png,img/p2.png,img/p3.png,img/p4.png,img/placeholder.png,img/planetary_nebula.png,img/plugin_color.png,img/plugin_mass.png,img/plugin_surface_brightness.png,img/plugin_temprature.png,img/plugin_volume.png,img/pointer.png,img/protostar.png,img/pulsar.png,img/red_giant.png,img/red_super_giant.png,img/sky_canvas.png,img/sky_canvas_preview.png,img/sky_canvas.psd,img/sky_canvas.svg,img/sky canvas wo arrows.svg,img/supernova_remnant.png,img/svg,img/trophy.png,img/type_Ia_supernova.png,img/type_ii_supernova.png,img/white_dwarf.png"; */
 import processing.sound.*;
 
 // DEBUG mode for factory scene
@@ -7,6 +8,8 @@ boolean DEBUG_FACTORY = false;
 // DEMO mode 
 // All stars will be unlocked
 boolean DEMO_MODE = false;
+
+Javascript javascript;
 
 // using iPhone 6/7's aspect ratio
 int displayWidth = 1334;
@@ -46,6 +49,14 @@ PImage[] image= new PImage[6];
 PImage[] scale = new PImage[5];
 PImage factoryimg;
 PImage pointerimg;
+
+interface Javascript {
+    
+}
+
+void bindJavascript(Javascript js){
+    javascript = js;
+}
 
 // Since enum doesn't work out-of-box in processing, 
 // use static abstract class as a hack
@@ -98,6 +109,41 @@ class Star{
         this.next = new ArrayList<String>();
         this.ccolor = 0;
         //printInfo();
+    }
+
+    Star(String name, int x, int y, int w, int h, String starImgPath, Sring rawState){
+        this.name = name;
+        this.x = x; 
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.origW = w;
+        this.origH = h;
+		if(DEMO_MODE){
+			this.state = State.CLEAR;
+		}else{
+			if(rawState.equals("starter")){
+                this.state = State.STARTER;
+            } else if (rawState.equals("locked")){
+                this.state = State.LOCKED;
+            } else if (rawState.equals("unlocked")){
+                this.state = State.UNLOCKED;
+            } else if (rawState.equals("clear")){
+                this.state = State.CLEAR;
+            } else{
+                state = State.LOCKED;
+                System.out.printf("WARNING: Can't interprete star state: %s --> %s\n", this.name, rawState);
+            }
+		}
+        this.isFXPlayed = false;
+        this.mass = new int[2];
+        this.magnitude = new int[2];
+        this.volume = new int[2];
+        this.temperature = new int[2];
+        this.next = new ArrayList<String>();
+        this.ccolor = 0;
+        this.starImg = loadImage(imgBasePath + starImgPath);
+        this.placeholderImg = loadImage(placeholderPath);
     }
 
     void setMass(JSONArray raw){
@@ -410,9 +456,15 @@ void setup() {
     }
 }
 
-void loadStar(HashMap<String, Object> json){
-    
-}
+Star loadSingleStar(String name, int x, int y, int w, int h, String starImgPath, int state){
+    for(int i=0; i < starlist.length; i++){
+        if(starlist[i] == null){
+            starlist[i] = new Star(name, x, y, w, h, starImgPath, state);
+            return starlist[i];
+        }
+    }
+    return null;
+} 
 
 void loadStars(){
     // load placeholder image
@@ -451,7 +503,7 @@ void loadStars(){
         stars[i].setVolume(star.getJSONArray("volume"));
         stars[i].setTemperature(star.getJSONArray("temperature"));
         stars[i].setColor(star.getInt("color"));
-    JSONArray unlock = star.getJSONArray("unlock"); 
+        JSONArray unlock = star.getJSONArray("unlock"); 
         String[] nextlist = unlock.getStringArray();
         for(int j=0; j < nextlist.length; j++){
             stars[i].addNext(nextlist[j]);
